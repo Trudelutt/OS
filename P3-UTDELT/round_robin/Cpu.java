@@ -12,7 +12,10 @@ public class Cpu {
      * @param cpuQueue		The CPU queue to be used.
      * @param maxCpuTime	The Round Robin time quant to be used.
      * @param statistics	A reference to the statistics collector.
+     * 
      */
+	private LinkedList<Process> cpuQueue;
+	
     public Cpu(LinkedList<Process> cpuQueue, long maxCpuTime, Statistics statistics) {
         // Incomplete
     }
