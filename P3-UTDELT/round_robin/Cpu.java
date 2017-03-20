@@ -15,9 +15,14 @@ public class Cpu {
      * 
      */
 	private LinkedList<Process> cpuQueue;
+	private long maxCPUTime;
+	private Statistics statistics;
 	
     public Cpu(LinkedList<Process> cpuQueue, long maxCpuTime, Statistics statistics) {
         // Incomplete
+    	this.cpuQueue = cpuQueue;
+    	this.maxCPUTime = maxCpuTime;
+    	this.statistics = statistics;
     }
 
     /**
