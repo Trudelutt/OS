@@ -15,8 +15,14 @@ public class Io {
      * @param avgIoTime		The average duration of an I/O operation.
      * @param statistics	A reference to the statistics collector.
      */
+    private LinkedList<Process>ioQueue;
+    private long avgIoTime;
+    private Statistics statistics;
+    
     public Io(LinkedList<Process> ioQueue, long avgIoTime, Statistics statistics) {
-        // Incomplete
+        this.ioQueue = ioQueue;
+        this.avgIoTime = avgIoTime;
+        this.statistics = statistics;
     }
 
     /**
@@ -28,7 +34,8 @@ public class Io {
      *							if no operation was initiated.
      */
     public Event addIoRequest(Process requestingProcess, long clock) {
-        // Incomplete
+    	// finn ut hva greia med klokka er?
+        ioQueue.add(requestingProcess);
         return null;
     }
 
@@ -40,7 +47,12 @@ public class Io {
      *					or null	if no operation was initiated.
      */
     public Event startIoOperation(long clock) {
-        // Incomplete
+    	//sjekk om det er her man skal regne ut siden den bruker på eventet
+        if(!ioQueue.isEmpty()){
+        	Event ioEvent = new Event(4, clock);
+        	activeProcess = ioQueue.peek();
+        	return ioEvent;
+        }
         return null;
     }
 
@@ -49,7 +61,10 @@ public class Io {
      * @param timePassed	The amount of time that has passed since the last call to this method.
      */
     public void timePassed(long timePassed) {
-        // Incomplete
+    	statistics.ioQueueLengthTime += ioQueue.size()*timePassed;
+		if (ioQueue.size() > statistics.ioQueueLargestLength) {
+			statistics.ioQueueLargestLength = ioQueue.size();
+		}
     }
 
     /**
@@ -57,7 +72,10 @@ public class Io {
      * @return	The process that was doing I/O, or null if no process was doing I/O.
      */
     public Process removeActiveProcess() {
-        // Incomplete
+        if(!ioQueue.isEmpty()){
+        	return ioQueue.remove();
+        	
+        }
         return null;
     }
 
