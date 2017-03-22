@@ -49,7 +49,7 @@ public class Io {
     public Event startIoOperation(long clock) {
     	//sjekk om det er her man skal regne ut siden den bruker på eventet
         if(!ioQueue.isEmpty()){
-        	Event ioEvent = new Event(4, clock);
+        	Event ioEvent = new Event(Event.IO_REQUEST, clock);
         	activeProcess = ioQueue.peek();
         	return ioEvent;
         }

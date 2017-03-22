@@ -17,6 +17,7 @@ public class Cpu {
 	private LinkedList<Process> cpuQueue;
 	private long maxCPUTime;
 	private Statistics statistics;
+	private Process activeProcess;
 	
     public Cpu(LinkedList<Process> cpuQueue, long maxCpuTime, Statistics statistics) {
         // Incomplete
@@ -34,9 +35,16 @@ public class Cpu {
      *				or null	if no process was activated.
      */
     public Event insertProcess(Process p, long clock) {
-        // Incomplete
-    	//todo
-        return null;
+    	
+    		if(activeProcess == null){
+    			activeProcess = p;
+    		 return null;
+    		}
+    		else{
+    			cpuQueue.add(p);
+    			return this.switchProcess(clock);
+    		}
+  
     }
 
     /**
@@ -49,6 +57,15 @@ public class Cpu {
      */
     public Event switchProcess(long clock) {
         // Incomplete
+    	if(!cpuQueue.isEmpty()){
+    		cpuQueue.add(activeProcess);
+    		activeProcess = cpuQueue.pop();
+    		
+    		long time = clock + 50;
+    
+    		Event event = new Event(Event.SWITCH_PROCESS, time);
+    		return event;
+    	}
         return null;
     }
 
@@ -68,8 +85,7 @@ public class Cpu {
      * @return	The process currently using the CPU.
      */
     public Process getActiveProcess() {
-        // Incomplete
-        return null;
+        return activeProcess;
     }
 
     /**

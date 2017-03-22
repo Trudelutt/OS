@@ -101,5 +101,8 @@ public class Process {
 		return processId;
 	}
 
+	public long getTimeForIO(){
+		return avgIoInterval;
+	}
 	// Add more methods as needed
 }

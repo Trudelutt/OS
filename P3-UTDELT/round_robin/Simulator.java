@@ -160,8 +160,9 @@ public class Simulator
 
 			// Since we haven't implemented the CPU and I/O device yet,
 			// we let the process leave the system immediately, for now.
-			memory.processCompleted(p);
+			//memory.processCompleted(p);
 			// Try to use the freed memory:
+			cpuQueue.add(p);
 			transferProcessFromMemToReady();
 			// Update statistics
 			p.updateStatistics(statistics);
@@ -175,7 +176,10 @@ public class Simulator
 	 * Simulates a process switch.
 	 */
 	private void switchProcess() {
-		// Incomplete
+		// 
+		
+		eventQueue.insertEvent(cpu.switchProcess(clock));
+	
 	}
 
 	/**
