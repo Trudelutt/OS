@@ -20,7 +20,6 @@ public class Cpu {
 	private Process activeProcess;
 	
     public Cpu(LinkedList<Process> cpuQueue, long maxCpuTime, Statistics statistics) {
-        // Incomplete
     	this.cpuQueue = cpuQueue;
     	this.maxCPUTime = maxCpuTime;
     	this.statistics = statistics;
@@ -35,7 +34,6 @@ public class Cpu {
      *				or null	if no process was activated.
      */
     public Event insertProcess(Process p, long clock) {
-    	
     		if(activeProcess == null){
     			activeProcess = p;
     		 return null;

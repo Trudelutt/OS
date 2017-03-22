@@ -162,7 +162,7 @@ public class Simulator
 			// we let the process leave the system immediately, for now.
 			//memory.processCompleted(p);
 			// Try to use the freed memory:
-			cpuQueue.add(p);
+			cpu.insertProcess(p, clock);
 			transferProcessFromMemToReady();
 			// Update statistics
 			p.updateStatistics(statistics);
