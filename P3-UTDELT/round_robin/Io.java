@@ -35,8 +35,14 @@ public class Io {
      */
     public Event addIoRequest(Process requestingProcess, long clock) {
     	// finn ut hva greia med klokka er?
-        ioQueue.add(requestingProcess);
-        return null;
+    	if(activeProcess == null){
+			activeProcess = requestingProcess;
+			return null;
+		}
+		else{
+			ioQueue.add(requestingProcess);
+			return this.startIoOperation(clock);
+		}
     }
 
     /**
@@ -74,7 +80,6 @@ public class Io {
     public Process removeActiveProcess() {
         if(!ioQueue.isEmpty()){
         	return ioQueue.remove();
-        	
         }
         return null;
     }

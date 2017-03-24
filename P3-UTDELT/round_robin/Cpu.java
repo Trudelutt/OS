@@ -55,7 +55,7 @@ public class Cpu {
      */
     public Event switchProcess(long clock) {
         // Incomplete
-    	if(!cpuQueue.isEmpty()){
+    	while(!cpuQueue.isEmpty()){
     		cpuQueue.add(activeProcess);
     		activeProcess = cpuQueue.pop();
     		

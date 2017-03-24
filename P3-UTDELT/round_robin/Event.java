@@ -5,8 +5,7 @@ package round_robin;
  *
  * @see EventQueue
  */
-public class Event implements Comparable
-{
+public class Event implements Comparable {
     /** Event type describing the arrival of a new process */
 	public static final int NEW_PROCESS = 1;
     /** Event type describing the completion of the active process */
