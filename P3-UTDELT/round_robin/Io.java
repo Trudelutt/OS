@@ -35,6 +35,7 @@ public class Io {
      */
     public Event addIoRequest(Process requestingProcess, long clock) {
     	// finn ut hva greia med klokka er?
+    	//not sure if this is correct
     	if(activeProcess == null){
 			activeProcess = requestingProcess;
 			return null;
