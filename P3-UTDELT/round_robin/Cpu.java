@@ -18,6 +18,7 @@ public class Cpu {
 	private long maxCPUTime;
 	private Statistics statistics;
 	private Process activeProcess;
+	private Event event;
 	
     public Cpu(LinkedList<Process> cpuQueue, long maxCpuTime, Statistics statistics) {
     	this.cpuQueue = cpuQueue;
@@ -58,10 +59,15 @@ public class Cpu {
     	if(!cpuQueue.isEmpty()){
     		cpuQueue.add(activeProcess);
     		activeProcess = cpuQueue.pop();
-    		
-    		long time = clock + 50;
-    
-    		Event event = new Event(Event.SWITCH_PROCESS, time);
+    		long time = clock + activeProcess.getLastEventTime();
+    		activeProcess.setTimeSpendtInCpu(time);
+    		System.out.println(time);
+    		if(activeProcess.getCpuTimeNeeded() < maxCPUTime){
+    			event = new Event(Event.END_PROCESS, clock);
+    		}
+    		else{
+    			event = new Event(Event.SWITCH_PROCESS, clock);
+    		}    		
     		return event;
     	}
         return null;
@@ -75,6 +81,10 @@ public class Cpu {
      */
     public Event activeProcessLeft(long clock) {
         // Incomplete
+    	if(activeProcess == null){
+    		activeProcess = cpuQueue.pop();
+    		return switchProcess(clock);
+    	}
         return null;
     }
 
@@ -92,6 +102,10 @@ public class Cpu {
      */
     public void timePassed(long timePassed) {
         // Incomplete
+    	switchProcess(timePassed);
+    }
+    public void setActiveprocess(Process p){
+    	activeProcess = p;
     }
 
 }

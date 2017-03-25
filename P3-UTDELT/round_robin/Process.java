@@ -104,5 +104,20 @@ public class Process {
 	public long getTimeForIO(){
 		return avgIoInterval;
 	}
+	
+	public long getLastEventTime(){
+		return timeOfLastEvent;
+	}
+	
+	public void setTimeSpendtInCpu(long clock){
+		timeSpentInCpu+= clock - timeOfLastEvent;
+		//
+	}
+	
+	public long getCpuTimeNeeded(){
+		cpuTimeNeeded -= timeSpentInCpu;
+		return cpuTimeNeeded;
+	}
 	// Add more methods as needed
+	
 }

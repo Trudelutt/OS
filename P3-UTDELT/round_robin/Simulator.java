@@ -4,6 +4,8 @@ import java.lang.*;
 import java.util.LinkedList;
 import java.util.function.Consumer;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 /**
  * The main class of the P3 exercise. This class is only partially complete.
  */
@@ -91,6 +93,7 @@ public class Simulator
 			// Deal with the event
 			if (clock < simulationLength) {
 				processEvent(event);
+				System.out.println("den pross event");
 			}
 
 			// Let the GUI know we handled an event.
@@ -112,6 +115,8 @@ public class Simulator
 	 * @param event	The event to be processed.
 	 */
 	private void processEvent(Event event) {
+		System.out.println("event type" + event.getType());
+		System.out.println("event time" +event.getType());
 		switch (event.getType()) {
 			case Event.NEW_PROCESS:
 				createProcess();
@@ -120,6 +125,7 @@ public class Simulator
 				switchProcess();
 				break;
 			case Event.END_PROCESS:
+				System.out.println("fant en end_process");
 				endProcess();
 				break;
 			case Event.IO_REQUEST:
@@ -129,6 +135,7 @@ public class Simulator
 				endIoOperation();
 				break;
 		}
+		
 	}
 
 	/**
@@ -164,6 +171,7 @@ public class Simulator
 			// Try to use the freed memory:
 			cpu.insertProcess(p, clock);
 			transferProcessFromMemToReady();
+			//eventQueue.insertEvent(cpu.switchProcess(clock + p.getLastEventTime()));
 			// Update statistics
 			p.updateStatistics(statistics);
 
@@ -177,7 +185,7 @@ public class Simulator
 	 */
 	private void switchProcess() {
 		// 
-		
+		System.out.println("test");
 		eventQueue.insertEvent(cpu.switchProcess(clock));
 	
 	}
@@ -187,6 +195,10 @@ public class Simulator
 	 */
 	private void endProcess() {
 		// Incomplete
+		System.out.println("endprosess?");
+		memory.processCompleted(cpu.getActiveProcess());
+		getCpu().setActiveprocess(null);
+		getCpu().activeProcessLeft(clock);
 	}
 
 	/**
