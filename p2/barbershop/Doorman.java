@@ -1,4 +1,4 @@
-package p2;
+package barbershop;
 
 /**
  * This class implements the doorman's part of the

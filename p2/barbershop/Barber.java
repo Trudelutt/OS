@@ -1,4 +1,4 @@
-package p2;
+package barbershop;
 
 import java.awt.Dialog.ModalExclusionType;
 

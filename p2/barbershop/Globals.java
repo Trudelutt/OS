@@ -1,4 +1,4 @@
-package p2;
+package barbershop;
 
 /**
  * Class containing three globally available variables modified by the GUI

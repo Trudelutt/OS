@@ -44,18 +44,13 @@ public class Bank {
 	 * night safe. If there is too much money in the night safe,
 	 * all the money is transferred to the vault.
 	 */
-	public void depositMoney(int amount) {
-		synchronized (couriers) {
-			
-		
+	public synchronized void depositMoney(int amount) {	
 		nightSafeAmount += amount;
 		if(nightSafeAmount > 200) {
 			// Transfer the money in the night safe to the vault:
 			vaultAmount += nightSafeAmount;
-			nightSafeAmount = 0;
-			
+			nightSafeAmount = 0;	
 		}
-	}
 	}
 
 	/**

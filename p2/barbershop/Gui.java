@@ -1,4 +1,4 @@
-package p2;
+package barbershop;
 
 /**
  * It should not be necessary to edit this interface (but feel free to do so if you wish).
