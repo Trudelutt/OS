@@ -35,10 +35,12 @@ public class Io {
      */
     public Event addIoRequest(Process requestingProcess, long clock) {
     	// finn ut hva greia med klokka er?
+
     	ioQueue.add(requestingProcess);
     	return startIoOperation(clock);
     	
         
+
     }
 
     /**
@@ -76,12 +78,14 @@ public class Io {
      * @return	The process that was doing I/O, or null if no process was doing I/O.
      */
     public Process removeActiveProcess() {
+
         if(activeProcess != null){
         	Process finished = activeProcess;
         	activeProcess = null;
         	
         	return finished;
         	
+
         }
         return null;
     }

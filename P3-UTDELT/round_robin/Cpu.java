@@ -55,6 +55,7 @@ public class Cpu {
     
     public Event switchProcess(long clock) {
         // Incomplete
+<<<<<<< HEAD
     	if(!cpuQueue.isEmpty()){
     		if(activeProcess == null){
     			activeProcess = cpuQueue.pop();
@@ -74,6 +75,15 @@ public class Cpu {
     		else{
     			event = new Event(Event.SWITCH_PROCESS, clock+ maxCPUTime);
     		}    		
+=======
+    	while(!cpuQueue.isEmpty()){
+    		cpuQueue.add(activeProcess);
+    		activeProcess = cpuQueue.pop();
+    		
+    		long time = clock + 50;
+    
+    		Event event = new Event(Event.SWITCH_PROCESS, time);
+>>>>>>> 6fbe1419d5747f7807760a7ac128b1c8163c09b1
     		return event;
     	}
     	return null;
