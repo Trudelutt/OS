@@ -54,8 +54,6 @@ public class Cpu {
  
     
     public Event switchProcess(long clock) {
-        // Incomplete
-<<<<<<< HEAD
     	if(!cpuQueue.isEmpty()){
     		if(activeProcess == null){
     			activeProcess = cpuQueue.pop();
@@ -75,15 +73,6 @@ public class Cpu {
     		else{
     			event = new Event(Event.SWITCH_PROCESS, clock+ maxCPUTime);
     		}    		
-=======
-    	while(!cpuQueue.isEmpty()){
-    		cpuQueue.add(activeProcess);
-    		activeProcess = cpuQueue.pop();
-    		
-    		long time = clock + 50;
-    
-    		Event event = new Event(Event.SWITCH_PROCESS, time);
->>>>>>> 6fbe1419d5747f7807760a7ac128b1c8163c09b1
     		return event;
     	}
     	return null;
@@ -98,7 +87,6 @@ public class Cpu {
      *			process was switched in.
      */
     public Event activeProcessLeft(long clock) {
-        // Incomplete
     	if(activeProcess == null && !cpuQueue.isEmpty()){
     		return switchProcess(clock);
     	}
@@ -118,7 +106,6 @@ public class Cpu {
      * @param timePassed	The amount of time that has passed since the last call to this method.
      */
     public void timePassed(long timePassed) {
-        // Incomplete
     	if(activeProcess != null){
     		activeProcess.setTimeSpendtInCpu(timePassed);
     	}

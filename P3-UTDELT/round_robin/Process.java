@@ -132,7 +132,6 @@ public class Process {
 		else{
 			timeForIo = avgIoInterval;
 		}
-		//
 	}
 	
 	public void setTimeWaitingForIo(long clock){
@@ -154,6 +153,5 @@ public class Process {
 	public long getCpuTimeNeeded(){
 		return cpuTimeNeeded;
 	}
-	// Add more methods as needed
 	
 }

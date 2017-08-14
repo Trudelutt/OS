@@ -216,7 +216,6 @@ public class Simulator
 	 * is done with its I/O operation.
 	 */
 	private void endIoOperation() {
-		// Incomplete
 		Process p = getIo().removeActiveProcess();
 		if(p!= null){
 			eventQueue.insertEvent(getCpu().insertProcess(p, clock));
