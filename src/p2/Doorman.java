@@ -18,7 +18,6 @@ public class Doorman implements Runnable {
 	private Thread thread;
 	
 	public Doorman(CustomerQueue queue, Gui gui) { 
-		// Incomplete
 		this.queue = queue;
 		this.gui = gui;
 		this.run = true;
@@ -30,15 +29,12 @@ public class Doorman implements Runnable {
 	 */
 	@Override
 	public void run(){
-		// Incomplete
-		
 		while(run){	
 			Customer customer = new Customer();
 			this.queue.add(customer);
 			try {
 				Thread.sleep(Globals.doormanSleep);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -50,7 +46,6 @@ public class Doorman implements Runnable {
 	 * sure to create the thread and start it.
 	 */
 	public void startThread() {
-		// Incomplete
 		this.thread = new Thread(this);
 		this.thread.start();
 		
@@ -61,16 +56,12 @@ public class Doorman implements Runnable {
 	 * a thread.
 	 */
 	public void stopThread() {
-		// Incomplete
 		this.run = false;
 		try{
 			this.thread.join();
 		} catch (InterruptedException e) {
-			// This should not happen.
 			e.printStackTrace();
 		}
 		
 	}
-
-	// Add more methods as needed
 }

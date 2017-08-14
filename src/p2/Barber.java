@@ -23,12 +23,11 @@ public class Barber implements Runnable {
 	private boolean free;
 	
 	public Barber(CustomerQueue queue, Gui gui, int pos) { 
-		// Incomplete
 		this.queue = queue;
 		this.gui = gui;
 		this.pos = pos;
-		this.run = true;
-		this.free = true;
+		this.run = true; //check if the thread is running
+		this.free = true; //check if the barber is free to take in another customer
 		
 	}
 
@@ -38,23 +37,13 @@ public class Barber implements Runnable {
 	 */
 	@Override
 	public void run(){
-		// Incomplete
 		while(run){
-			synchronized (this) {
-			if (this.queue.getSize() != 0){
-				Customer customer = this.queue.next(this.pos);
-				if(customer != null){
-					this.gui.emptyLoungeChair(this.queue.getSize());
-					this.gui.fillBarberChair(this.pos, customer);
-					this.free = false;
-					}
-			}
-			}
+			this.queue.next(this.pos);
+			this.free = false;
 			if(!this.free){
 				try {
 					Thread.sleep(Globals.barberWork);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				gui.emptyBarberChair(this.pos);
@@ -62,7 +51,6 @@ public class Barber implements Runnable {
 				try {
 					Thread.sleep(Globals.barberSleep);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				gui.barberIsAwake(this.pos);
@@ -77,7 +65,6 @@ public class Barber implements Runnable {
 	 * Starts the barber running as a separate thread.
 	 */
 	public void startThread() {
-		// Incomplete
 		this.thread = new Thread(this);
 		this.thread.start();
 		
@@ -87,7 +74,6 @@ public class Barber implements Runnable {
 	 * Stops the barber thread.
 	 */
 	public void stopThread() {
-		// Incomplete
 		this.run = false;
 		try{
 			this.thread.join();
@@ -96,7 +82,5 @@ public class Barber implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	// Add more methods as needed
 }
 
