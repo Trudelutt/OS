@@ -35,8 +35,10 @@ public class Io {
      */
     public Event addIoRequest(Process requestingProcess, long clock) {
     	// finn ut hva greia med klokka er?
-        ioQueue.add(requestingProcess);
-        return null;
+    	ioQueue.add(requestingProcess);
+    	return startIoOperation(clock);
+    	
+        
     }
 
     /**
@@ -48,10 +50,11 @@ public class Io {
      */
     public Event startIoOperation(long clock) {
     	//sjekk om det er her man skal regne ut siden den bruker på eventet
-        if(!ioQueue.isEmpty()){
-        	Event ioEvent = new Event(Event.IO_REQUEST, clock);
-        	activeProcess = ioQueue.peek();
-        	return ioEvent;
+        if(!ioQueue.isEmpty() && activeProcess == null){
+        	activeProcess = ioQueue.pop();
+        	activeProcess.setTimeWaitingForIo(clock);
+        	activeProcess.setTimeSpendtInIo(avgIoTime);
+        	return new Event(Event.END_IO, clock+ avgIoTime);
         }
         return null;
     }
@@ -65,6 +68,7 @@ public class Io {
 		if (ioQueue.size() > statistics.ioQueueLargestLength) {
 			statistics.ioQueueLargestLength = ioQueue.size();
 		}
+	
     }
 
     /**
@@ -72,8 +76,11 @@ public class Io {
      * @return	The process that was doing I/O, or null if no process was doing I/O.
      */
     public Process removeActiveProcess() {
-        if(!ioQueue.isEmpty()){
-        	return ioQueue.remove();
+        if(activeProcess != null){
+        	Process finished = activeProcess;
+        	activeProcess = null;
+        	
+        	return finished;
         	
         }
         return null;

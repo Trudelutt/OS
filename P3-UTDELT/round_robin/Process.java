@@ -39,6 +39,10 @@ public class Process {
 
 	/** The global time of the last event involving this process */
 	private long timeOfLastEvent;
+	
+	private long timeForIo = avgIoInterval;
+	
+	
 
 	/**
 	 * Creates a new process with given parameters. Other parameters are randomly
@@ -67,6 +71,7 @@ public class Process {
     public void leftMemoryQueue(long clock) {
 		  timeSpentWaitingForMemory += clock - timeOfLastEvent;
 		  timeOfLastEvent = clock;
+		  
     }
 
     /**
@@ -102,20 +107,51 @@ public class Process {
 	}
 
 	public long getTimeForIO(){
-		return avgIoInterval;
+		return timeForIo;
 	}
 	
+	public void setTimeSpentInReadyQueue(long clock){
+		timeSpentInReadyQueue += clock - timeOfLastEvent;
+		timeOfLastEvent = clock;
+	}
 	public long getLastEventTime(){
 		return timeOfLastEvent;
 	}
 	
-	public void setTimeSpendtInCpu(long clock){
-		timeSpentInCpu+= clock - timeOfLastEvent;
+	public void setTimeSpendtInCpu(long timepassed){
+		timeSpentInCpu+= timepassed;
+		if(timepassed < cpuTimeNeeded){
+			cpuTimeNeeded-= timepassed;
+		}
+		else{
+			cpuTimeNeeded = 0;
+		}
+		if(timepassed< timeForIo){
+			timeForIo-= timepassed;
+		}
+		else{
+			timeForIo = avgIoInterval;
+		}
 		//
 	}
 	
+	public void setTimeWaitingForIo(long clock){
+		timeSpentWaitingForIo += clock -timeOfLastEvent;
+		timeOfLastEvent = clock;
+	}
+	public void setTimeSpendtInIo(long clock){
+		timeSpentInIo += clock;
+	}
+	
+	public void updateNoTimesInio(){
+		nofTimesInIoQueue++;
+	}
+	
+	public void updateNoTimesInCpu(){
+		nofTimesInReadyQueue++;
+	}
+	
 	public long getCpuTimeNeeded(){
-		cpuTimeNeeded -= timeSpentInCpu;
 		return cpuTimeNeeded;
 	}
 	// Add more methods as needed

@@ -87,13 +87,13 @@ public class Simulator
 
 			// Let the cpu, memory unit, io and the GUI know that time has passed
 			cpu.timePassed(timeDifference);
+			statistics.totalBusyCpuTime = statistics.totalTimeSpentInCpu;
 			memory.timePassed(timeDifference);
 			io.timePassed(timeDifference);
-
+			
 			// Deal with the event
 			if (clock < simulationLength) {
 				processEvent(event);
-				System.out.println("den pross event");
 			}
 
 			// Let the GUI know we handled an event.
@@ -115,8 +115,8 @@ public class Simulator
 	 * @param event	The event to be processed.
 	 */
 	private void processEvent(Event event) {
-		System.out.println("event type" + event.getType());
-		System.out.println("event time" +event.getType());
+		//System.out.println("event type" + event.getType());
+		//System.out.println("event time" +event.getTime());
 		switch (event.getType()) {
 			case Event.NEW_PROCESS:
 				createProcess();
@@ -125,7 +125,6 @@ public class Simulator
 				switchProcess();
 				break;
 			case Event.END_PROCESS:
-				System.out.println("fant en end_process");
 				endProcess();
 				break;
 			case Event.IO_REQUEST:
@@ -169,11 +168,10 @@ public class Simulator
 			// we let the process leave the system immediately, for now.
 			//memory.processCompleted(p);
 			// Try to use the freed memory:
-			cpu.insertProcess(p, clock);
-			transferProcessFromMemToReady();
-			//eventQueue.insertEvent(cpu.switchProcess(clock + p.getLastEventTime()));
+			eventQueue.insertEvent(cpu.insertProcess(p, clock));
+			p.updateNoTimesInCpu();
 			// Update statistics
-			p.updateStatistics(statistics);
+			//p.updateStatistics(statistics);
 
 			// Check for more free memory
 			p =	 memory.checkMemory(clock);
@@ -183,10 +181,10 @@ public class Simulator
 	/**
 	 * Simulates a process switch.
 	 */
-	private void switchProcess() {
-		// 
-		System.out.println("test");
+	private void switchProcess() { 
 		eventQueue.insertEvent(cpu.switchProcess(clock));
+		getCpu().getActiveProcess().setTimeSpentInReadyQueue(clock);
+		statistics.nofProcessSwitches++;
 	
 	}
 
@@ -194,11 +192,12 @@ public class Simulator
 	 * Ends the active process, and deallocates any resources allocated to it.
 	 */
 	private void endProcess() {
-		// Incomplete
-		System.out.println("endprosess?");
+
+        getCpu().getActiveProcess().updateStatistics(statistics);
 		memory.processCompleted(cpu.getActiveProcess());
 		getCpu().setActiveprocess(null);
-		getCpu().activeProcessLeft(clock);
+		eventQueue.insertEvent(getCpu().activeProcessLeft(clock));
+		
 	}
 
 	/**
@@ -206,7 +205,10 @@ public class Simulator
 	 * perform an I/O operation.
 	 */
 	private void processIoRequest() {
-		// Incomplete
+		eventQueue.insertEvent(getIo().addIoRequest(getCpu().getActiveProcess(), clock));
+		getCpu().getActiveProcess().updateNoTimesInio();
+		getCpu().setActiveprocess(null);
+		eventQueue.insertEvent(getCpu().activeProcessLeft(clock));
 	}
 
 	/**
@@ -215,6 +217,15 @@ public class Simulator
 	 */
 	private void endIoOperation() {
 		// Incomplete
+		Process p = getIo().removeActiveProcess();
+		if(p!= null){
+			eventQueue.insertEvent(getCpu().insertProcess(p, clock));
+			p.updateNoTimesInCpu();
+			if(!ioQueue.isEmpty()){
+				eventQueue.insertEvent(getIo().startIoOperation(clock));
+			}
+		}
+		statistics.nofProcessedIoOperations++;
 	}
 
 

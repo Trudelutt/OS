@@ -35,15 +35,11 @@ public class Cpu {
      *				or null	if no process was activated.
      */
     public Event insertProcess(Process p, long clock) {
+    		cpuQueue.add(p);
     		if(activeProcess == null){
-    			activeProcess = p;
-    		 return null;
-    		}
-    		else{
-    			cpuQueue.add(p);
     			return this.switchProcess(clock);
     		}
-  
+    		return null;
     }
 
     /**
@@ -54,23 +50,35 @@ public class Cpu {
      * @return		The event causing the process that was activated to leave the CPU,
      *				or null	if no process was activated.
      */
+    
+ 
+    
     public Event switchProcess(long clock) {
         // Incomplete
     	if(!cpuQueue.isEmpty()){
-    		cpuQueue.add(activeProcess);
-    		activeProcess = cpuQueue.pop();
-    		long time = clock + activeProcess.getLastEventTime();
-    		activeProcess.setTimeSpendtInCpu(time);
-    		System.out.println(time);
-    		if(activeProcess.getCpuTimeNeeded() < maxCPUTime){
-    			event = new Event(Event.END_PROCESS, clock);
+    		if(activeProcess == null){
+    			activeProcess = cpuQueue.pop();
     		}
     		else{
-    			event = new Event(Event.SWITCH_PROCESS, clock);
+	    		cpuQueue.add(activeProcess);
+	    		activeProcess = cpuQueue.pop();
+    		}
+    	}
+    	if(activeProcess != null){
+    		if(activeProcess.getCpuTimeNeeded() < maxCPUTime && activeProcess.getCpuTimeNeeded() < activeProcess.getTimeForIO()){
+    			event = new Event(Event.END_PROCESS, clock+ activeProcess.getCpuTimeNeeded());
+    		}
+    		else if(activeProcess.getTimeForIO() < maxCPUTime){
+    			event = new Event(Event.IO_REQUEST, clock + activeProcess.getTimeForIO());
+    		}
+    		else{
+    			event = new Event(Event.SWITCH_PROCESS, clock+ maxCPUTime);
     		}    		
     		return event;
     	}
-        return null;
+    	return null;
+    	
+    
     }
 
     /**
@@ -81,8 +89,7 @@ public class Cpu {
      */
     public Event activeProcessLeft(long clock) {
         // Incomplete
-    	if(activeProcess == null){
-    		activeProcess = cpuQueue.pop();
+    	if(activeProcess == null && !cpuQueue.isEmpty()){
     		return switchProcess(clock);
     	}
         return null;
@@ -102,7 +109,15 @@ public class Cpu {
      */
     public void timePassed(long timePassed) {
         // Incomplete
-    	switchProcess(timePassed);
+    	if(activeProcess != null){
+    		activeProcess.setTimeSpendtInCpu(timePassed);
+    	}
+    	statistics.cpuQueueLengthTime += cpuQueue.size()*timePassed;
+		if (cpuQueue.size() > statistics.cpuQueueLargestLength) {
+			statistics.cpuQueueLargestLength = cpuQueue.size();
+		}
+    	
+    	
     }
     public void setActiveprocess(Process p){
     	activeProcess = p;
