@@ -1,6 +1,10 @@
 package p1;
 import java.util.ArrayList;
 
+import javax.sql.rowset.spi.SyncFactoryException;
+
+import com.sun.org.apache.xerces.internal.parsers.CachingParserPool.SynchronizedGrammarPool;
+
 public class Bank {
 	private int nightSafeAmount;
 	private int vaultAmount;
@@ -44,12 +48,13 @@ public class Bank {
 	 * night safe. If there is too much money in the night safe,
 	 * all the money is transferred to the vault.
 	 */
-	public synchronized void depositMoney(int amount) {	
+	public synchronized void depositMoney(int amount) {
 		nightSafeAmount += amount;
 		if(nightSafeAmount > 200) {
 			// Transfer the money in the night safe to the vault:
 			vaultAmount += nightSafeAmount;
-			nightSafeAmount = 0;	
+			nightSafeAmount = 0;
+			
 		}
 	}
 
