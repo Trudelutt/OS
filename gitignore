@@ -1,5 +1,5 @@
 .DS_Store
 .classpath
 .project
-bin/.DS_Store
-bin/barbershop/
+bin/**
+imagesp3
